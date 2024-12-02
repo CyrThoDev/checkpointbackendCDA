@@ -7,12 +7,19 @@ export class countryResolvers {
 
 // Query to get all countries
 
-@Query((type) => [Country])
+@Query(() => [Country])
 async getAllCountries(): Promise<Country[]> {
 	const countries: Country[] = await datasource.manager.find(Country);
 	return countries;
 }
 
+// Query to get a country when specifying a the country code 
+
+@Query(() => Country)
+async getCountryByCode(@Arg("code") code :string): Promise<Country> {
+	const country: Country = await datasource.manager.findOneByOrFail(Country, {code});
+	return country;
+}
 
 	// Mutation to create a country 
 	@Mutation((_) => Country)
