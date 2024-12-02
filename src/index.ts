@@ -1,13 +1,24 @@
+import { buildSchema } from "type-graphql";
 import { datasource } from "./datasource";
-console.log("Hello");
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
-export async function start() {
+const port = 4000;
+export async function startApolloServer() {
 	try {
+		const schema = await buildSchema({
+			resolvers: [],
+		});
+		const server = new ApolloServer({ schema });
 		await datasource.initialize();
 		console.log("datasource initialized");
+		const { url } = await startStandaloneServer(server, {
+			listen: { port },
+		});
+		console.log(`🚀  Server ready at: ${url}`);
 	} catch (error) {
-		console.error("Error initializing datasource", error);
+		console.error("Error starting server:", error);
 	}
 }
 
-start();
+startApolloServer();
