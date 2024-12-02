@@ -1,6 +1,7 @@
 import { Arg, Mutation, Resolver, Query } from "type-graphql";
 import { Country } from "../entities/Country";
 import { datasource } from "../datasource";
+import { CountryInputType } from "../types/CountryInputType";
 
 @Resolver(Country)
 export class countryResolvers {
@@ -27,9 +28,10 @@ async getCountryByCode(@Arg("code") code :string): Promise<Country> {
     @Arg("code") code :string, 
     @Arg("name") name :string, 
     @Arg("emoji") emoji :string, 
+		@Arg("continent") continent :string, 
   ): Promise<Country> {
 		try {
-			const newCountry = new Country(code, name, emoji);
+			const newCountry = new Country(code, name, emoji, continent);
 			await datasource.manager.save(newCountry);
 			return newCountry;
 		} catch (error) {
