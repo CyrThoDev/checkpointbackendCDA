@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { datasource } from "./datasource";
 import { ApolloServer } from "@apollo/server";
