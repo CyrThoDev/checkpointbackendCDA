@@ -16,11 +16,20 @@ async getAllCountries(): Promise<Country[]> {
 
 // Query to get a country when specifying a the country code 
 
+@Query(() => [Country])
+async getCountriesByContinent(@Arg("continent") continent :string): Promise<Country[]> {
+	const countriesbyContinent: Country[] = await datasource.manager.findBy(Country, {continent});
+	return countriesbyContinent;
+}
+
+// Query to get all countries when specifying a continent 
+
 @Query(() => Country)
 async getCountryByCode(@Arg("code") code :string): Promise<Country> {
 	const country: Country = await datasource.manager.findOneByOrFail(Country, {code});
 	return country;
 }
+
 
 	// Mutation to create a country 
 	@Mutation((_) => Country)
